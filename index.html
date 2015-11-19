@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+window.onload=function(){
+    setInterval(function(){ isOnline("100006915194491"); }, 20000);	
+};
+var doc;
+
+document.addEventListener('DOMContentLoaded', function () {
+  if (Notification.permission !== "granted")
+    Notification.requestPermission();
+});
+
+function notifyMe() {
+  if (!Notification) {
+    alert('Desktop notifications not available in your browser. Try Chromium.'); 
+    return;
+  }
+
+  if (Notification.permission !== "granted")
+    Notification.requestPermission();
+  else {
+    var notification = new Notification('Laya Online', {
+      icon: 'https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p32x32/11855787_1623107394596418_6084381513790988631_n.jpg?oh=1eda9de54696226717546a048a61cfdf&oe=56835FD2&__gda__=1451247085_57197f2788f0190bc78d15ddc2798605',
+      body: "Laya Catherine Mathew is online",
+    });
+
+    notification.onclick = function () {
+      window.open("https://www.facebook.com/messages/catherinelaya.mathew");      
+    };
+
+  }
+
+}
+
+
+// Create the XHR object.
+function createCORSRequest(method, url) {
+  var xhr = new XMLHttpRequest();
+  if ("withCredentials" in xhr) {
+    // XHR for Chrome/Firefox/Opera/Safari.
+    xhr.open(method, url, true);
+  } else if (typeof XDomainRequest != "undefined") {
+    // XDomainRequest for IE.
+    xhr = new XDomainRequest();
+    xhr.open(method, url);
+  } else {
+    // CORS not supported.
+    xhr = null;
+  }
+  return xhr;
+}
+
+// Helper method to parse the title tag from the response.
+function getCallable(text) {
+  return text.match('"is_callable":(.*)?,"reason_code')[1];
+}
+
+// Make the actual CORS request.
+function makeCorsRequest(id) {
+  // All HTML5 Rocks properties support CORS.
+var url="https://m.facebook.com/rtc/callability/?user_id=100006915194491";
+var xhr = createCORSRequest('GET', url);
+  if (!xhr) {
+    alert('CORS not supported');
+    return;
+  }
+
+  // Response handlers.
+  xhr.onload = function() {
+    var text = xhr.responseText;
+    doc=xhr.responseText;
+	document.body.innerHTML+='<audio hidden><source src="http://www.w3schools.com/html/horse.mp3" type="audio/mpeg"></audio>'
+    alert(text+" ** "+getCallable(text));
+	if(getCallable(text)=="false"){
+	$('audio')[0].play();
+	notifyMe();
+	}
+    
+  };
+
+  xhr.onerror = function() {
+    alert('Woops, there was an error making the request.');
+  };
+
+  xhr.send();
+}
+
+function isOnline(str) {
+makeCorsRequest(str);
+}
+</script>
+</head>
+<body>
+hi
+</body>
+</html>
+
+
+
+
+
+
+
+function notifyMe() {
+  if (!Notification) {
+    alert('Desktop notifications not available in your browser. Try Chromium.'); 
+    return;
+  }
+
+  if (Notification.permission !== "granted")
+    Notification.requestPermission();
+  else {
+    var notification = new Notification('Laya Online', {
+      icon: 'https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p32x32/11855787_1623107394596418_6084381513790988631_n.jpg?oh=1eda9de54696226717546a048a61cfdf&oe=56835FD2&__gda__=1451247085_57197f2788f0190bc78d15ddc2798605',
+      body: "Laya Catherine Mathew is online",
+    });
+
+    notification.onclick = function () {
+      window.open("https://www.facebook.com/messages/catherinelaya.mathew");      
+    };
+
+  }
+
+}
+
+
+// Create the XHR object.
+function createCORSRequest(method, url) {
+  var xhr = new XMLHttpRequest();
+  if ("withCredentials" in xhr) {
+    // XHR for Chrome/Firefox/Opera/Safari.
+    xhr.open(method, url, true);
+  } else if (typeof XDomainRequest != "undefined") {
+    // XDomainRequest for IE.
+    xhr = new XDomainRequest();
+    xhr.open(method, url);
+  } else {
+    // CORS not supported.
+    xhr = null;
+  }
+  return xhr;
+}
+
+// Helper method to parse the title tag from the response.
+function getCallable(text) {
+  return text.match('"is_callable":(.*)?,"reason_code')[1];
+}
+
+// Make the actual CORS request.
+function makeCorsRequest(id) {
+  // All HTML5 Rocks properties support CORS.
+var url="https://m.facebook.com/rtc/callability/?user_id=100006915194491";
+var xhr = createCORSRequest('GET', url);
+  if (!xhr) {
+    alert('CORS not supported');
+    return;
+  }
+
+  // Response handlers.
+  xhr.onload = function() {
+    var text = xhr.responseText;
+    doc=xhr.responseText;
+    //alert(text+" ** "+getCallable(text));
+	if(getCallable(text)=="true"){
+	notifyMe();
+	}else{console.log("Laya Offline"); }
+    
+  };
+
+  xhr.onerror = function() {
+    alert('Woops, there was an error making the request.');
+  };
+
+  xhr.send();
+}
+
+function isOnline(str) {
+makeCorsRequest(str);
+}
